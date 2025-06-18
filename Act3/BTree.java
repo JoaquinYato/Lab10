@@ -24,30 +24,35 @@ public class BTree<E extends Comparable<E>> {
             this.root = pnew;
         }
     }
-    private E push(BNode<E> current,E cl){
+    private E push(BNode<E> current, E cl) {
         int pos[] = new int[1];
         E mediana;
-        if(current == null){
+
+        if (current == null) {
             up = true;
             nDes = null;
             return cl;
-        }
-        else{
+        } else {
             boolean fl;
             fl = current.searchNode(cl, pos);
-            if(fl){
+
+            if (fl) {
                 System.out.println("Item duplicado\n");
                 up = false;
                 return null;
             }
-            mediana = push(current.childs.get(pos[0]),cl);
-            if(up){
-                if(current.nodeFull(this.orden-1))
-                    mediana = dividedNode(current,mediana,pos[0]);else{
+
+            mediana = push(current.childs.get(pos[0]), cl);
+
+            if (up) {
+                if (current.nodeFull(this.orden - 1)) {
+                    mediana = dividedNode(current, mediana, pos[0]);
+                } else {
+                    putNode(current, mediana, nDes, pos[0]);
+                    up = false;
                 }
             }
-            up = false;
-            putNode(current,mediana,nDes,pos[0]);
+
             return mediana;
         }
     }
@@ -61,24 +66,31 @@ public class BTree<E extends Comparable<E>> {
         current.childs.set(k+1,rd);
         current.count++;
     }
-    private E dividedNode(BNode<E> current,E cl,int
-            k){ BNode<E> rd = nDes;
+    private E dividedNode(BNode<E> current, E cl, int k) {
+        BNode<E> rd = nDes;
         int i, posMdna;
-        posMdna = (k <= this.orden/2) ? this.orden/2 : this.orden/2+1;
-        nDes = new BNode<E>(this.orden);
-        for(i = posMdna; i < this.orden-1; i++)
-        { nDes.keys.set(iposMdna,current.keys.get(i));
-            nDes.childs.set(i-posMdna+1,current.childs.get(i+1));
+
+        posMdna = (k <= this.orden / 2) ? this.orden / 2 : this.orden / 2 + 1;
+        nDes = new BNode<>(this.orden);
+
+        for (i = posMdna; i < this.orden - 1; i++) {
+            nDes.keys.set(i - posMdna, current.keys.get(i));
+            nDes.childs.set(i - posMdna + 1, current.childs.get(i + 1));
         }
+
         nDes.count = (this.orden - 1) - posMdna;
         current.count = posMdna;
-        if(k <= this.orden/2)
-            putNode(current,cl,rd,k);
-        else
-            putNode(nDes,cl,rd,k-posMdna);
-        E median = current.keys.get(current.count-1);
-        nDes.childs.set(0,current.childs.get(current.count));
+
+        if (k <= this.orden / 2) {
+            putNode(current, cl, rd, k);
+        } else {
+            putNode(nDes, cl, rd, k - posMdna);
+        }
+
+        E median = current.keys.get(current.count - 1);
+        nDes.childs.set(0, current.childs.get(current.count));
         current.count--;
+
         return median;
     }
 
