@@ -1,44 +1,67 @@
+import java.util.*;
+
 public class BNode<E extends Comparable<E>> {
     protected ArrayList<E> keys;
     protected ArrayList<BNode<E>> childs;
     protected int count;
     protected int idNode;
 
-    public BNode (int n){
-        this.keys = new ArrayList<E>(n);
-        this.childs = new ArrayList<BNode<E>>(n);
+    public BNode(int n) {
+        this.keys = new ArrayList<>(n);
+        this.childs = new ArrayList<>(n + 1); // n claves => n+1 hijos
         this.count = 0;
         this.idNode = 0;
-        for(int i=0; i < n;
-            i++){ this.keys.add(null);
+
+        for (int i = 0; i < n; i++) {
+            this.keys.add(null);
+        }
+        for (int i = 0; i < n + 1; i++) {
             this.childs.add(null);
         }
     }
-    public boolean nodeFull () {
-        return keys.size() == count;
+
+    public boolean nodeFull(int maxKeys) {
+        return count == maxKeys;
     }
 
-    public boolean nodeEmpty () {
+    public boolean nodeEmpty() {
         return count == 0;
     }
 
-    public boolean searchNode ( ) {
-        int x = 0;
-        while(x<count && keys.get(i) != null && keys.get(i).compareTo(key) < 0){
+    public boolean searchNode(E key, int[] pos) {
+        int i = 0;
+        while (i < count && keys.get(i) != null && keys.get(i).compareTo(key) < 0) {
             i++;
         }
-        return i
+        pos[0] = i;
+        return (i < count && keys.get(i) != null && keys.get(i).compareTo(key) == 0);
     }
 
     public boolean keyExists(E key) {
-        int pos = searchNode(key);
-        return pos < count && keys.get(pos) != null && keys.get(pos).equals(key);
+        int[] pos = new int[1];
+        boolean found = searchNode(key, pos);
+        return found;
+    }
+
+    public ArrayList<E> getKeys() {
+        return keys;
+    }
+
+    public ArrayList<BNode<E>> getChilds() {
+        return childs;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getIdNode() {
+        return idNode;
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Node ").append(idNode).append(": [");
-
         for (int i = 0; i < count; i++) {
             if (keys.get(i) != null) {
                 sb.append(keys.get(i));
@@ -47,16 +70,7 @@ public class BNode<E extends Comparable<E>> {
                 }
             }
         }
-
         sb.append("]");
         return sb.toString();
     }
-}
-
-private E getPredecesor(BNode<E> node, int index){
-    BNode<E> curretn = node.childs.get(index);
-    while (current.childs.get(current.count) != null){
-        current = current.childs.get(current.count);
-    }
-    return current.keys.get(current.count-1);
 }
