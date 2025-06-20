@@ -92,7 +92,7 @@ public class BTree<E extends Comparable<E>> {
         boolean found = node.searchNode(key, pos);
 
         if (found) {
-            if (node.childs.get(pos[0]) != null) {
+            if (node.childs.get(pos[0]) == null) {
                 removeKey(node, pos[0]);
                 return true;
             } else {
@@ -101,7 +101,7 @@ public class BTree<E extends Comparable<E>> {
                 return delete(node.childs.get(pos[0]), pred);
             }
         } else {
-            if (node.childs.get(pos[0]) != null) {
+            if (node.childs.get(pos[0]) == null) {
                 return false;
             } else {
                 boolean isDeleted = delete(node.childs.get(pos[0]), key);
