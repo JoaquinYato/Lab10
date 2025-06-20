@@ -134,14 +134,14 @@ public class InterfazArboBEjer3 extends JFrame{
 
             if (opcion == 0) { // Desde archivo
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Seleccione el archivo del árbol B");
+                fileChooser.setDialogTitle("Seleccione el archivo del arbol B");
                 int userSelection = fileChooser.showOpenDialog(null);
 
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     arbol = BTree.building_Btree(file.getAbsolutePath());
                     if (arbol == null) {
-                        JOptionPane.showMessageDialog(null, "No se pudo construir el árbol desde el archivo.");
+                        JOptionPane.showMessageDialog(null, "No se pudo construir el arbol");
                         return;
                     }
                 } else {
@@ -180,10 +180,10 @@ public class InterfazArboBEjer3 extends JFrame{
             try {
                 orden = Integer.parseInt(campo.getText().trim());
                 if (orden < 3) {
-                    JOptionPane.showMessageDialog(null, "El orden debe ser al menos 3.");
+                    JOptionPane.showMessageDialog(null, "El orden debe ser al menos 3");
                 }
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Ingrese un número válido.");
+                JOptionPane.showMessageDialog(null, "Ingrese un número válido");
             }
         }
         return orden;
