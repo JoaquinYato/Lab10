@@ -1,13 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.io.File;
 
-public class InterfazArboB extends JFrame{
+public class InterfazArboBEjer3 extends JFrame{
     private BTree bt;
     private DibujoPanel panel;
 
-    public InterfazArboB(int orden){
-        this.bt = new BTree(orden);
+    public InterfazArboBEjer3(BTree bt){
+        this.bt = bt;
 
         setTitle("Arbol B");
         setSize(1000, 770);
@@ -29,10 +29,8 @@ public class InterfazArboB extends JFrame{
         btnBuscarClave.addActionListener(e -> buscarKey());
         botones.add(btnBuscarClave);
 
-
         botones.add(btnAgregarClave);
         botones.add(btnEliminarClave);
-        botones.add(btnBuscarClave);
         add(botones, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -41,7 +39,7 @@ public class InterfazArboB extends JFrame{
     private void agregarKey(){
         String valor = JOptionPane.showInputDialog(this, "Ingrese clave a agregar:");
         if (valor != null && !valor.trim().isEmpty() ){
-            bt.insert( valor);
+            bt.insert(valor);
             panel.repaint();
         }
     }
@@ -122,10 +120,45 @@ public class InterfazArboB extends JFrame{
 
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> {
-            int orden = mostrarPanelIngresoOrden();
-            if (orden >= 3) {
-                new InterfazArboB(orden);
+            int opcion = JOptionPane.showOptionDialog(
+                null,
+                "¿Cómo desea iniciar el árbol B?",
+                "Inicio del Árbol B",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new Object[]{"Desde archivo", "Vacío"},
+                "Desde archivo"
+            );
+            BTree<String> arbol = null;
+
+            if (opcion == 0) { // Desde archivo
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Seleccione el archivo del árbol B");
+                int userSelection = fileChooser.showOpenDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    arbol = BTree.building_Btree(file.getAbsolutePath());
+                    if (arbol == null) {
+                        JOptionPane.showMessageDialog(null, "No se pudo construir el árbol desde el archivo.");
+                        return;
+                    }
+                } else {
+                    return; // Cancelado
+                }
+            } else if (opcion == 1) { // Vacío
+                int orden = mostrarPanelIngresoOrden();
+                if (orden >= 3) {
+                    arbol = new BTree<>(orden);
+                } else {
+                    return;
+                }
+            } else {
+                return; // Cancelado
             }
+
+            new InterfazArboBEjer3(arbol);
         });
     }
 
