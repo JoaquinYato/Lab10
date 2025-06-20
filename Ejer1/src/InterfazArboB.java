@@ -32,7 +32,7 @@ public class InterfazArboB extends JFrame{
 
         botones.add(btnAgregarClave);
         botones.add(btnEliminarClave);
-        botones.add(btnBuscarClave;
+        botones.add(btnBuscarClave);
         add(botones, BorderLayout.SOUTH);
 
         setVisible(true);
